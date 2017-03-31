@@ -4,7 +4,10 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import org.vaadin.bugrap.domain.entities.Project;
 import org.vaadin.hene.popupbutton.PopupButton;
+
+import java.util.stream.Stream;
 
 /**
  * Created by diegocardoso on 3/31/17.
@@ -39,5 +42,13 @@ public class MainPage extends MainPageDesign {
         customStatusLayout.addComponent(customStatusOptions);
 
         statusOptions.addComponent(customStatusPopupBtn);
+
+        Stream<String> streamOfItems = myUI.getProjects().stream().map(project -> project.getName());
+        Project firstProject = myUI.getProjects().iterator().next();
+
+        projectSelectorCombo.setItems(streamOfItems);
+        projectSelectorCombo.setSelectedItem(firstProject.getName());
+
+        reportsTable.setItems(myUI.getReportsByProject(firstProject));
     }
 }

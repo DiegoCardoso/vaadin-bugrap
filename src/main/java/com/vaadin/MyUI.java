@@ -7,12 +7,13 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.bugrap.domain.BugrapRepository;
+import org.vaadin.bugrap.domain.entities.Project;
+import org.vaadin.bugrap.domain.entities.Report;
+
+import java.util.Set;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -47,7 +48,20 @@ public class MyUI extends UI {
         // TODO implement BugRap. Good luck :)
         mainPage = new MainPage(this);
         layout.addComponent(mainPage);
+
+
     }
+
+    public Set<Project> getProjects() {
+        return repo.findProjects();
+    }
+
+    public Set<Report> getReportsByProject(Project project) {
+        BugrapRepository.ReportsQuery reportsQuery = new BugrapRepository.ReportsQuery();
+        reportsQuery.project = project;
+        return repo.findReports(reportsQuery);
+    }
+
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)

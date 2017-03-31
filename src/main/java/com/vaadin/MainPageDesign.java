@@ -26,6 +26,7 @@ import com.vaadin.ui.Grid;
 @SuppressWarnings("serial")
 public class MainPageDesign extends VerticalLayout {
     protected HorizontalLayout header;
+    protected ComboBox<String> projectSelectorCombo;
     protected Label accountNameLabel;
     protected Link logoutLink;
     protected HorizontalLayout menu;
@@ -45,7 +46,7 @@ public class MainPageDesign extends VerticalLayout {
     protected Button openStatusBtn;
     protected Button allKindsStatusBtn;
     protected VerticalSplitPanel tableDetailsSession;
-    protected Grid<String> reportsTable;
+    protected Grid<org.vaadin.bugrap.domain.entities.Report> reportsTable;
 
     public MainPageDesign() {
         Design.read(this);
