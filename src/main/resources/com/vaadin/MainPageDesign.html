@@ -7,9 +7,9 @@
   <meta name="package-mapping" content="org_vaadin_hene_popupbutton:org.vaadin.hene.popupbutton">
  </head>
  <body>
-  <vaadin-vertical-layout size-full margin="false">
+  <vaadin-vertical-layout height="809px" margin="false">
    <vaadin-horizontal-layout width-full margin _id="header">
-    <vaadin-combo-box empty-selection-allowed="false" width-full data-item-type="java.lang.String" _id="projectSelectorCombo" :expand>
+    <vaadin-combo-box empty-selection-allowed="false" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand>
      <option item="Option1">Option 1</option>
      <option item="Option2">Option 2</option>
      <option item="Option3">Option 3</option>
@@ -24,7 +24,7 @@
     <vaadin-label plain-text>
       123 
     </vaadin-label>
-    <vaadin-horizontal-layout>
+    <vaadin-horizontal-layout _id="searchReportLayout">
      <vaadin-label plain-text _id="searchIconLabel"></vaadin-label>
      <vaadin-text-field placeholder="Search reports..." _id="searchField"></vaadin-text-field>
      <vaadin-label plain-text _id="searchCloseLabel"></vaadin-label>
@@ -34,7 +34,7 @@
     <vaadin-label plain-text>
       Reports for 
     </vaadin-label>
-    <vaadin-combo-box empty-selection-allowed="false" data-item-type="java.lang.String" _id="reportsCombo">
+    <vaadin-combo-box empty-selection-allowed="false" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="projectVersionsCombo">
      <option item="Option1">Option 1</option>
      <option item="Option2">Option 2</option>
      <option item="Option3">Option 3</option>
@@ -64,9 +64,7 @@
      </vaadin-button>
     </vaadin-horizontal-layout>
    </vaadin-horizontal-layout>
-   <vaadin-vertical-split-panel height="73px" _id="tableDetailsSession">
-    <vaadin-grid size-full data-item-type="org.vaadin.bugrap.domain.entities.Report" _id="reportsTable"></vaadin-grid>
-   </vaadin-vertical-split-panel>
+   <vaadin-vertical-split-panel split-position="99%" _id="tableDetailsSession" :expand></vaadin-vertical-split-panel>
   </vaadin-vertical-layout>
  </body>
 </html>
