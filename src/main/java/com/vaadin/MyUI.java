@@ -11,7 +11,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.bugrap.domain.BugrapRepository;
 import org.vaadin.bugrap.domain.entities.Project;
+import org.vaadin.bugrap.domain.entities.ProjectVersion;
 import org.vaadin.bugrap.domain.entities.Report;
+import org.vaadin.bugrap.domain.entities.Reporter;
 
 import java.util.Set;
 
@@ -31,6 +33,7 @@ public class MyUI extends UI {
      */
     private final BugrapRepository repo = new BugrapRepository("bugrap");
     private MainPage mainPage;
+    private Reporter reporterSignedOn;
 
 // ^^^ You probably would like to use "/var/tmp/bugrap" on OSX/Linux ;)
 
@@ -39,16 +42,16 @@ public class MyUI extends UI {
 
         // initialize backend
         repo.populateWithTestData();
+        reporterSignedOn = repo.findReporters().iterator().next();
+
         // build layout
         final VerticalLayout layout = new VerticalLayout();
 
         layout.setMargin(false);
         setContent(layout);
 
-        // TODO implement BugRap. Good luck :)
-        mainPage = new MainPage(this);
+        mainPage = new MainPage(this, reporterSignedOn);
         layout.addComponent(mainPage);
-
 
     }
 
@@ -56,10 +59,47 @@ public class MyUI extends UI {
         return repo.findProjects();
     }
 
-    public Set<Report> getReportsByProject(Project project) {
+    public Set<Report> getReportsByProject(Project project, ProjectVersion projectVersion) {
+        BugrapRepository.ReportsQuery reportsQuery = buildReportsQuery(project, projectVersion);
+
+        return repo.findReports(reportsQuery);
+    }
+
+    private BugrapRepository.ReportsQuery buildReportsQuery(Project project, ProjectVersion projectVersion) {
         BugrapRepository.ReportsQuery reportsQuery = new BugrapRepository.ReportsQuery();
         reportsQuery.project = project;
+
+        if (projectVersion.getVersion() != "All versions") {
+            reportsQuery.projectVersion = projectVersion;
+        }
+        return reportsQuery;
+    }
+
+    public Set<Report> filterReportsByProject(Project project, ProjectVersion projectVersion, Set<Report.Status> reportStatuses) {
+        BugrapRepository.ReportsQuery reportsQuery = buildReportsQuery(project, projectVersion);
+
+        if (reportStatuses.size() != 0) {
+            reportsQuery.reportStatuses = reportStatuses;
+        }
+
         return repo.findReports(reportsQuery);
+    }
+
+    public Set<Report> filterReportsByProject(Project project, ProjectVersion projectVersion, Set<Report.Status> reportStatuses, Reporter reporter) {
+        BugrapRepository.ReportsQuery reportsQuery = buildReportsQuery(project, projectVersion);
+
+        reportsQuery.reportAssignee = reporter;
+
+
+        if (reportStatuses.size() != 0) {
+            reportsQuery.reportStatuses = reportStatuses;
+        }
+
+        return repo.findReports(reportsQuery);
+    }
+
+    public Set<ProjectVersion> getVersionsByProject (Project project) {
+        return repo.findProjectVersions(project);
     }
 
 
