@@ -35,4 +35,8 @@
   @include valo;
 
   // Insert your own theme rules here
+  .mystyle {
+    background-color:yellow;
+    color:blue;
+  }
 }
