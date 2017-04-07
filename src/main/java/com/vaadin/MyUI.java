@@ -10,11 +10,9 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.vaadin.bugrap.domain.BugrapRepository;
-import org.vaadin.bugrap.domain.entities.Project;
-import org.vaadin.bugrap.domain.entities.ProjectVersion;
-import org.vaadin.bugrap.domain.entities.Report;
-import org.vaadin.bugrap.domain.entities.Reporter;
+import org.vaadin.bugrap.domain.entities.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,7 +29,7 @@ public class MyUI extends UI {
     /**
      * Backend access point
      */
-    private final BugrapRepository repo = new BugrapRepository("bugrap");
+    private final BugrapRepository repo = new BugrapRepository("/var/tmp/bugrap");
     private MainPage mainPage;
     private Reporter reporterSignedOn;
 
@@ -42,7 +40,7 @@ public class MyUI extends UI {
 
         // initialize backend
         repo.populateWithTestData();
-        reporterSignedOn = repo.findReporters().iterator().next();
+        reporterSignedOn = getAllReporters().iterator().next();
 
         // build layout
         final VerticalLayout layout = new VerticalLayout();
@@ -53,6 +51,10 @@ public class MyUI extends UI {
         mainPage = new MainPage(this, reporterSignedOn);
         layout.addComponent(mainPage);
 
+    }
+
+    public Set<Reporter> getAllReporters() {
+        return repo.findReporters();
     }
 
     public Set<Project> getProjects() {
@@ -81,7 +83,6 @@ public class MyUI extends UI {
         if (reportStatuses.size() != 0) {
             reportsQuery.reportStatuses = reportStatuses;
         }
-
         return repo.findReports(reportsQuery);
     }
 
@@ -101,6 +102,10 @@ public class MyUI extends UI {
     public Set<ProjectVersion> getVersionsByProject (Project project) {
         return repo.findProjectVersions(project);
     }
+
+    public Report saveReport (Report report) { return repo.save(report); }
+
+    public List<Comment> getCommentsByReport(Report report) { return repo.findComments(report); }
 
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
