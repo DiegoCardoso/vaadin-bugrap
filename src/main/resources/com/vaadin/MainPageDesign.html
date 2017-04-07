@@ -7,13 +7,9 @@
   <meta name="package-mapping" content="org_vaadin_hene_popupbutton:org.vaadin.hene.popupbutton">
  </head>
  <body>
-  <vaadin-vertical-layout height="809px" margin="false">
+  <vaadin-vertical-layout size-full margin="false">
    <vaadin-horizontal-layout width-full margin _id="header">
-    <vaadin-combo-box empty-selection-allowed="false" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand>
-     <option item="Option1">Option 1</option>
-     <option item="Option2">Option 2</option>
-     <option item="Option3">Option 3</option>
-    </vaadin-combo-box>
+    <vaadin-combo-box empty-selection-allowed="false" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand></vaadin-combo-box>
     <vaadin-label icon="fonticon://Vaadin-Icons/e80d" caption="Marc Manager" plain-text _id="accountNameLabel"></vaadin-label>
     <vaadin-link caption="Logout" _id="logoutLink"></vaadin-link>
    </vaadin-horizontal-layout>
@@ -34,37 +30,33 @@
     <vaadin-label plain-text>
       Reports for 
     </vaadin-label>
-    <vaadin-combo-box empty-selection-allowed="false" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="projectVersionsCombo">
-     <option item="Option1">Option 1</option>
-     <option item="Option2">Option 2</option>
-     <option item="Option3">Option 3</option>
-    </vaadin-combo-box>
+    <vaadin-combo-box empty-selection-allowed="false" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="projectVersionsCombo"></vaadin-combo-box>
    </vaadin-horizontal-layout>
    <vaadin-horizontal-layout _id="reportsFiltering">
     <vaadin-label plain-text>
       Assignees 
     </vaadin-label>
-    <vaadin-horizontal-layout spacing="false" _id="assigneesOptions">
-     <vaadin-button plain-text _id="onlyMeAssigneeBtn">
-       Only me 
-     </vaadin-button>
+    <vaadin-css-layout style-name="v-component-group" _id="assigneesOptions">
      <vaadin-button plain-text _id="everyoneAssigneeBtn">
        Everyone 
      </vaadin-button>
-    </vaadin-horizontal-layout>
+     <vaadin-button plain-text _id="onlyMeAssigneeBtn">
+       Only me 
+     </vaadin-button>
+    </vaadin-css-layout>
     <vaadin-label plain-text>
       Status 
     </vaadin-label>
-    <vaadin-horizontal-layout spacing="false" _id="statusOptions">
-     <vaadin-button plain-text _id="openStatusBtn">
-       Open 
-     </vaadin-button>
+    <vaadin-css-layout style-name="v-component-group" _id="statusOptions">
      <vaadin-button plain-text _id="allKindsStatusBtn">
        All kinds 
      </vaadin-button>
-    </vaadin-horizontal-layout>
+     <vaadin-button plain-text _id="openStatusBtn">
+       Open 
+     </vaadin-button>
+    </vaadin-css-layout>
    </vaadin-horizontal-layout>
-   <vaadin-vertical-split-panel split-position="99%" _id="tableDetailsSession" :expand></vaadin-vertical-split-panel>
+   <vaadin-vertical-split-panel height="500px" split-position="100%" _id="tableDetailsSession"></vaadin-vertical-split-panel>
   </vaadin-vertical-layout>
  </body>
 </html>

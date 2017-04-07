@@ -1,6 +1,7 @@
 package com.vaadin;
 
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.View;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -18,12 +19,14 @@ import java.util.*;
 /**
  * Created by diegocardoso on 3/31/17.
  */
-public class MainPage extends MainPageDesign {
+public class MainPage extends MainPageDesign implements ReportUpdateListener {
     private final MyUI myUI;
     private final PopupButton customStatusPopupBtn;
     private final Grid<Report> reportGrid = new Grid<>(Report.class);
     private final Reporter reporter;
     private final CheckBoxGroup<Report.Status> customStatusOptions;
+
+    private final ReportsDetail reportsDetail;
 
     private Project selectedProject;
     private ProjectVersion selectedProjectVersion;
@@ -34,6 +37,9 @@ public class MainPage extends MainPageDesign {
         this.myUI = myUI;
         this.reporter = reporter;
 
+        reportsDetail = new ReportsDetail(myUI, this);
+
+        //Setting icons for labels
         logoutLink.setIcon(VaadinIcons.KEY);
         reportBugLink.setIcon(VaadinIcons.BUG);
         requestFeatureLink.setIcon(VaadinIcons.LIGHTBULB);
@@ -47,11 +53,12 @@ public class MainPage extends MainPageDesign {
         searchCloseLabel.setIcon(VaadinIcons.CLOSE);
         searchCloseLabel.setCaption("");
 
+        //Add popup button for custom status selection
         customStatusPopupBtn = new PopupButton("Custom");
         VerticalLayout customStatusLayout = new VerticalLayout();
         customStatusPopupBtn.setContent(customStatusLayout);
 
-        Label customStatusTitle = new Label("STATUS");
+        Label customStatusTitle = new Label("Status");
         customStatusLayout.addComponent(customStatusTitle);
 
         customStatusOptions = new CheckBoxGroup();
@@ -68,7 +75,9 @@ public class MainPage extends MainPageDesign {
         projectSelectorCombo.setItems(projectsList);
         projectSelectorCombo.setSelectedItem(firstProject);
 
+        //Grid config and placement
         reportGrid.setSizeFull();
+        reportGrid.setSelectionMode(Grid.SelectionMode.MULTI);
 
         reportGrid.setColumns("priority", "type", "summary", "assigned");
         reportGrid.getColumn("assigned").setCaption("Assigned to").setDescriptionGenerator(e -> e.getAssigned() != null? e.getAssigned().getName(): "");
@@ -79,8 +88,12 @@ public class MainPage extends MainPageDesign {
 
         tableDetailsSession.addComponent(reportGrid);
 
+        reportsDetail.setVisible(false);
+        tableDetailsSession.addComponent(reportsDetail);
+
         loadProject(firstProject);
 
+        // Adding listeners
         projectSelectorCombo.addValueChangeListener(e -> onChangeProject());
         projectVersionsCombo.addValueChangeListener(e -> onChangeProjectVersion());
 
@@ -90,6 +103,20 @@ public class MainPage extends MainPageDesign {
         openStatusBtn.addClickListener(e -> onClickOpenStatusBtn());
         allKindsStatusBtn.addClickListener(e -> onClickAllKindsStatusBtn());
         customStatusOptions.addSelectionListener(e -> onSelectCustomStatusOptions());
+
+        reportGrid.addSelectionListener( e -> onGridSelection(e.getAllSelectedItems()));
+    }
+
+    private void onGridSelection(Set<Report> reportsSelected) {
+        if (reportsSelected.size() == 0) {
+            reportsDetail.setVisible(false);
+            tableDetailsSession.setSplitPosition(100);
+            return;
+        }
+
+        tableDetailsSession.setSplitPosition(60);
+        reportsDetail.setVisible(true);
+        reportsDetail.setReports(reportsSelected, selectedProject);
     }
 
     private void loadProject (Project project) {
@@ -111,6 +138,10 @@ public class MainPage extends MainPageDesign {
         selectedProject = project;
         selectedProjectVersion = firstVersion;
 
+        setReportGridItems();
+    }
+
+    private void setReportGridItems() {
         reportGrid.setItems(myUI.filterReportsByProject(selectedProject, selectedProjectVersion, selectedStatuses));
     }
 
@@ -150,7 +181,7 @@ public class MainPage extends MainPageDesign {
         selectedStatuses = customStatusOptions.getSelectedItems();
         selectedAssignee = null;
 
-        reportGrid.setItems(myUI.filterReportsByProject(selectedProject, selectedProjectVersion, selectedStatuses));
+        setReportGridItems();
     }
 
     private void onSelectCustomStatusOptions() {
@@ -175,4 +206,12 @@ public class MainPage extends MainPageDesign {
 
         reportGrid.setItems(myUI.filterReportsByProject(selectedProject, selectedProjectVersion, selectedStatuses, selectedAssignee));
     }
+
+    @Override
+    public void onReportUpdate(Report report) {
+        setReportGridItems();
+    }
+
+    @Override
+    public void onReportsUpdate(Set<Report> report) { setReportGridItems();}
 }
