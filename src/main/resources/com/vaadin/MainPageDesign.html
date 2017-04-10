@@ -7,7 +7,7 @@
   <meta name="package-mapping" content="org_vaadin_hene_popupbutton:org.vaadin.hene.popupbutton">
  </head>
  <body>
-  <vaadin-vertical-layout size-full margin="false">
+  <vaadin-vertical-layout margin="false">
    <vaadin-horizontal-layout width-full margin _id="header">
     <vaadin-combo-box empty-selection-allowed="false" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand></vaadin-combo-box>
     <vaadin-label icon="fonticon://Vaadin-Icons/e80d" caption="Marc Manager" plain-text _id="accountNameLabel"></vaadin-label>
@@ -20,7 +20,7 @@
     <vaadin-label plain-text>
       123 
     </vaadin-label>
-    <vaadin-horizontal-layout _id="searchReportLayout">
+    <vaadin-horizontal-layout _id="searchReportLayout" :middle :right>
      <vaadin-label plain-text _id="searchIconLabel"></vaadin-label>
      <vaadin-text-field placeholder="Search reports..." _id="searchField"></vaadin-text-field>
      <vaadin-label plain-text _id="searchCloseLabel"></vaadin-label>
