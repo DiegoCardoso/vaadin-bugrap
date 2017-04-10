@@ -2,6 +2,7 @@ package com.vaadin;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.CheckBoxGroup;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -19,7 +20,8 @@ import java.util.*;
 /**
  * Created by diegocardoso on 3/31/17.
  */
-public class MainPage extends MainPageDesign implements ReportUpdateListener {
+public class MainPage extends MainPageDesign implements ReportUpdateListener, View {
+
     private final MyUI myUI;
     private final PopupButton customStatusPopupBtn;
     private final Grid<Report> reportGrid = new Grid<>(Report.class);
@@ -105,6 +107,9 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener {
         customStatusOptions.addSelectionListener(e -> onSelectCustomStatusOptions());
 
         reportGrid.addSelectionListener( e -> onGridSelection(e.getAllSelectedItems()));
+
+
+        reportBugLink.addContextClickListener( e -> myUI.openReport(new Report()));
     }
 
     private void onGridSelection(Set<Report> reportsSelected) {
@@ -214,4 +219,9 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener {
 
     @Override
     public void onReportsUpdate(Set<Report> report) { setReportGridItems();}
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent viewChangeEvent) {
+
+    }
 }
