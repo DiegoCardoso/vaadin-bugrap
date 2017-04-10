@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
@@ -33,24 +34,25 @@ public class MyUI extends UI {
     private MainPage mainPage;
     private Reporter reporterSignedOn;
 
-// ^^^ You probably would like to use "/var/tmp/bugrap" on OSX/Linux ;)
+    private Navigator navigator;
+    final private String REPORT_PAGE = "report";
 
     @Override
     protected void init(VaadinRequest request) {
 
+        navigator = new Navigator(this, this);
+
         // initialize backend
         repo.populateWithTestData();
         reporterSignedOn = getAllReporters().iterator().next();
+        setSizeFull();
 
-        // build layout
-        final VerticalLayout layout = new VerticalLayout();
+        navigator.addView("", new MainPage(this, reporterSignedOn));
+        navigator.addView(REPORT_PAGE, new ReportPage(this));
+    }
 
-        layout.setMargin(false);
-        setContent(layout);
-
-        mainPage = new MainPage(this, reporterSignedOn);
-        layout.addComponent(mainPage);
-
+    public void openReport(Report report) {
+        navigator.navigateTo(REPORT_PAGE + "/" + report.getId());
     }
 
     public Set<Reporter> getAllReporters() {
@@ -101,6 +103,10 @@ public class MyUI extends UI {
 
     public Set<ProjectVersion> getVersionsByProject (Project project) {
         return repo.findProjectVersions(project);
+    }
+
+    public Report getReportById(long reportId) {
+        return repo.getReportById(reportId);
     }
 
     public Report saveReport (Report report) { return repo.save(report); }
