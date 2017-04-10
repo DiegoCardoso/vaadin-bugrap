@@ -5,7 +5,6 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.declarative.Design;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
@@ -24,7 +23,7 @@ import com.vaadin.ui.Panel;
 @SuppressWarnings("serial")
 public class ReportsDetailDesign extends VerticalLayout {
     protected HorizontalLayout oneItemSelectedTitleContainer;
-    protected Link newWindowLink;
+    protected Button openReportBtn;
     protected Label reportSummary;
     protected HorizontalLayout multipleItemsSelectedTitleContainer;
     protected Label numberOfReportsSelected;
@@ -33,7 +32,7 @@ public class ReportsDetailDesign extends VerticalLayout {
     protected ComboBox<org.vaadin.bugrap.domain.entities.Report.Type> typeCombo;
     protected ComboBox<org.vaadin.bugrap.domain.entities.Report.Status> statusCombo;
     protected ComboBox<org.vaadin.bugrap.domain.entities.Reporter> assignedToCombo;
-    protected ComboBox<org.vaadin.bugrap.domain.entities.ProjectVersion> versionCombo;
+    protected ComboBox<String> versionCombo;
     protected Button updateReportsBtn;
     protected Button revertReportsBtn;
     protected Panel commentsSessionPanel;
