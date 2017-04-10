@@ -1,10 +1,7 @@
 package com.vaadin;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.bugrap.domain.entities.*;
 
@@ -25,6 +22,8 @@ public class ReportsDetail extends ReportsDetailDesign {
     private ReportUpdateListener reportUpdateListener;
     private Report reportUpdating;
 
+    private Set<ProjectVersion> projectVersions;
+
     final DateFormat dateTimeFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.ENGLISH);
 
     public ReportsDetail(MyUI myUI, ReportUpdateListener listener) {
@@ -40,6 +39,16 @@ public class ReportsDetail extends ReportsDetailDesign {
 
         updateReportsBtn.addClickListener(e -> onClickUpdateReport());
         revertReportsBtn.addClickListener(e -> onClickRevertReport());
+
+        openReportBtn.addClickListener(e -> onClickOpenReport());
+    }
+
+    public void hideNewWindowButton() {
+        openReportBtn.setVisible(false);
+    }
+
+    private void onClickOpenReport() {
+        myUI.openReport(reports.iterator().next());
     }
 
     private void onClickUpdateReport() {
@@ -58,23 +67,27 @@ public class ReportsDetail extends ReportsDetailDesign {
     private void updateOneReport() {
         Report reportToUpdate = reports.iterator().next();
 
+        ProjectVersion projectVersion = projectVersions.stream().filter(pv -> pv.getVersion() == versionCombo.getValue()).findFirst().get();
+
         reportToUpdate.setPriority(priorityCombo.getValue());
         reportToUpdate.setType(typeCombo.getValue());
         reportToUpdate.setStatus(statusCombo.getValue());
         reportToUpdate.setAssigned(assignedToCombo.getValue());
-        reportToUpdate.setVersion(versionCombo.getValue());
+        reportToUpdate.setVersion(projectVersion);
 
         reportToUpdate = myUI.saveReport(reportToUpdate);
         reportUpdateListener.onReportUpdate(reportToUpdate);
     }
 
     private void updateMultipleReports() {
+        ProjectVersion projectVersion = projectVersions.stream().filter(pv -> pv.getVersion() == versionCombo.getValue()).findFirst().get();
+
         final Stream<Report> reportUpdatedStream = reports.stream().map(report -> {
             if (priorityCombo.getValue() != null) report.setPriority(priorityCombo.getValue());
             if (typeCombo.getValue() != null) report.setType(typeCombo.getValue());
             if (statusCombo.getValue() != null) report.setStatus(statusCombo.getValue());
             if (assignedToCombo.getValue() != null) report.setAssigned(assignedToCombo.getValue());
-            if (versionCombo.getValue() != null) report.setVersion(versionCombo.getValue());
+            if (versionCombo.getValue() != null) report.setVersion(projectVersion);
 
             return myUI.saveReport(report);
         });
@@ -92,7 +105,9 @@ public class ReportsDetail extends ReportsDetailDesign {
             showMultipleReportsDetails();
         }
 
-        versionCombo.setItems(myUI.getVersionsByProject(project));
+        projectVersions = myUI.getVersionsByProject(project);
+        versionCombo.setItems(projectVersions.stream().map(projectVersion -> projectVersion.getVersion()));
+
     }
 
     private void showOneReportDetail() {
@@ -109,17 +124,17 @@ public class ReportsDetail extends ReportsDetailDesign {
         if (commentList.size() > 0) {
             commentsSessionPanel.setVisible(true);
             commentsSession.removeAllComponents();
-            commentList.forEach(comment -> commentsSession.addComponent(createComment(comment)));
+            commentList.forEach(comment -> commentsSession.addComponent(buildCommentComponent(comment)));
         }
 
-        
-        setCombosEmptySelectionAllowed(false);
+
+//        setCombosEmptySelectionAllowed(false);
         setCombosValues(reportSelected.getPriority(), reportSelected.getType(), reportSelected.getStatus(), reportSelected.getAssigned(), reportSelected.getVersion());
 
         reportUpdating = reportSelected;
     }
 
-    private Component createComment(Comment comment) {
+    private Component buildCommentComponent(Comment comment) {
         HorizontalLayout root = new HorizontalLayout();
         root.setMargin(false);
         root.setSizeFull();
@@ -171,17 +186,30 @@ public class ReportsDetail extends ReportsDetailDesign {
 
         commentsSessionPanel.setVisible(false);
 
-        setCombosEmptySelectionAllowed(true);
+//        setCombosEmptySelectionAllowed(true);
         setCombosValues(sharedAttributes.getPriority(), sharedAttributes.getType(), sharedAttributes.getStatus(), sharedAttributes.getAssigned(), sharedAttributes.getVersion());
         reportUpdating = sharedAttributes;
     }
 
     private void setCombosValues(Report.Priority priority, Report.Type type, Report.Status status, Reporter assigned, ProjectVersion projectVersion) {
+        priorityCombo.clear();
         priorityCombo.setValue(priority);
+
+        typeCombo.clear();
         typeCombo.setValue(type);
+
+        statusCombo.clear();
         statusCombo.setValue(status);
+
+        assignedToCombo.clear();
         assignedToCombo.setValue(assigned);
-        versionCombo.setValue(projectVersion);
+
+        if (projectVersion == null) {
+            versionCombo.clear();
+            versionCombo.setValue("");
+        } else {
+            versionCombo.setValue(projectVersion.getVersion());
+        }
     }
 
     private void setCombosEmptySelectionAllowed(boolean emptySelectionAllowed) {
