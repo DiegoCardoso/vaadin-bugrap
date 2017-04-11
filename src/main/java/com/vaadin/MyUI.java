@@ -49,6 +49,7 @@ public class MyUI extends UI {
 
         navigator.addView("", new MainPage(this, reporterSignedOn));
         navigator.addView(REPORT_PAGE, new ReportPage(this));
+
     }
 
     public void openReport(Report report) {
@@ -111,7 +112,15 @@ public class MyUI extends UI {
 
     public Report saveReport (Report report) { return repo.save(report); }
 
+    public Comment saveComment (Comment comment) {
+        return repo.save(comment);
+    }
+
     public List<Comment> getCommentsByReport(Report report) { return repo.findComments(report); }
+
+    public Reporter getReporterSignedOn() {
+        return reporterSignedOn;
+    }
 
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
