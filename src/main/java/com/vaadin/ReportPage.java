@@ -21,6 +21,9 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
 
     private MyUI myUI;
 
+    private Report report;
+
+
     private Label projectNameLabel;
     private Label projectVersionLabel;
     private final ReportsDetail reportsDetail;
@@ -69,13 +72,16 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
 
         HorizontalLayout buttonsSection = new HorizontalLayout();
         Button saveBtn = new Button("Done");
+        saveBtn.addClickListener(e -> saveNewComment());
 
         Upload attachmentBtn = new Upload("Attachment...", this);
         attachmentBtn.setImmediateMode(true);
         attachmentBtn.addSucceededListener(this);
         attachmentBtn.setButtonCaption("Upload");
 
+
         Button cancelBtn = new Button("Cancel");
+        cancelBtn.addClickListener(e -> cancelNewComment());
 
         buttonsSection.addComponents(saveBtn, attachmentBtn, cancelBtn);
 
@@ -84,22 +90,44 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
         return verticalLayout;
     }
 
+    private void saveNewComment() {
+        Comment newComment = new Comment();
+        newComment.setComment(commentTextArea.getValue());
+        newComment.setReport(report);
+        newComment.setAuthor(myUI.getReporterSignedOn());
+        newComment.setType(Comment.Type.COMMENT);
+
+        commentTextArea.clear();
+
+        myUI.saveComment(newComment);
+
+        setReport();
+    }
+
+    private void cancelNewComment() {
+        commentTextArea.clear();
+    }
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         if (event.getParameters() != "") {
             long reportId = Long.parseLong(event.getParameters());
 
-            Report report = myUI.getReportById(reportId);
+            report = myUI.getReportById(reportId);
             projectNameLabel.setValue(report.getProject().getName());
 
             if (report.getVersion() != null) {
                 projectVersionLabel.setValue(report.getVersion().getVersion());
             }
 
-            HashSet<Report> reportSet = new HashSet<>();
-            reportSet.add(report);
-            reportsDetail.setReports(reportSet, report.getProject());
+            setReport();
         }
+    }
+
+    private void setReport() {
+        HashSet<Report> reportSet = new HashSet<>();
+        reportSet.add(report);
+        reportsDetail.setReports(reportSet, report.getProject());
     }
 
     @Override
