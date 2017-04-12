@@ -153,6 +153,10 @@ public class ReportsDetail extends ReportsDetailDesign {
         Label commentField = new Label(comment.getComment());
         commentsArea.addComponents(commentTitle, commentField);
 
+        if (comment.getAttachmentName() != null) {
+            commentsArea.addComponents(new Label(comment.getAttachmentName()));
+        }
+
         root.addComponents(userIcon, commentsArea);
         root.setExpandRatio(commentsArea, 1);
 
