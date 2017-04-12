@@ -1,10 +1,10 @@
 package com.vaadin;
 
-import com.vaadin.event.dd.acceptcriteria.Not;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.bugrap.domain.entities.Comment;
 import org.vaadin.bugrap.domain.entities.Report;
 
@@ -12,30 +12,31 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 /**
  * Created by diegocardoso on 4/10/17.
  */
-public class ReportPage extends VerticalLayout implements View, ReportUpdateListener, Upload.Receiver, Upload.SucceededListener {
+public class ReportPage extends VerticalLayout implements View, ReportUpdateListener, Upload.Receiver, Upload.SucceededListener, Upload.ProgressListener {
 
     private MyUI myUI;
 
     private Report report;
-
 
     private Label projectNameLabel;
     private Label projectVersionLabel;
     private final ReportsDetail reportsDetail;
     private TextArea commentTextArea;
 
-    private File fileUpload;
+    private Upload attachmentBtn;
+    private ProgressBar progressBar;
+
+    private HorizontalLayout attachmentSection;
+
+    private File fileUploaded;
 
     public ReportPage (MyUI myUI) {
 
         this.myUI = myUI;
-
-
         setSizeFull();
 
 
@@ -74,20 +75,84 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
         Button saveBtn = new Button("Done");
         saveBtn.addClickListener(e -> saveNewComment());
 
-        Upload attachmentBtn = new Upload("Attachment...", this);
+        attachmentBtn = new Upload("Attachment...", this);
         attachmentBtn.setImmediateMode(true);
         attachmentBtn.addSucceededListener(this);
-        attachmentBtn.setButtonCaption("Upload");
 
+        attachmentBtn.addProgressListener(this);
+
+        attachmentBtn.addStartedListener(e -> {
+            addAttachmentBeingUploaded(e.getFilename());
+        });
+
+        attachmentBtn.setButtonCaption("Upload");
 
         Button cancelBtn = new Button("Cancel");
         cancelBtn.addClickListener(e -> cancelNewComment());
 
         buttonsSection.addComponents(saveBtn, attachmentBtn, cancelBtn);
 
-        verticalLayout.addComponents(commentTextArea, buttonsSection);
+        attachmentSection = (HorizontalLayout) createAttachmentSection();
+
+        verticalLayout.addComponents(commentTextArea, attachmentSection, buttonsSection);
 
         return verticalLayout;
+    }
+
+    private Component createAttachmentSection() {
+        HorizontalLayout container = new HorizontalLayout();
+
+        return container;
+    }
+
+    private void addAttachmentBeingUploaded(String fileName) {
+        HorizontalLayout container = new HorizontalLayout();
+        attachmentBtn.setEnabled(false);
+
+        Label fileNameLabel = new Label(fileName);
+
+        progressBar = new ProgressBar();
+        progressBar.setIndeterminate(false);
+
+        Button closeButton = new Button(VaadinIcons.CLOSE);
+        closeButton.addClickListener(e -> stopUpload());
+        closeButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+
+        container.addComponents(fileNameLabel, progressBar, closeButton);
+
+        attachmentSection.removeAllComponents();
+        attachmentSection.addComponents(container);
+    }
+
+    private void stopUpload() {
+        myUI.access(() -> {
+        attachmentBtn.interruptUpload();
+        attachmentSection.removeAllComponents();
+        attachmentBtn.setEnabled(true);   });
+    }
+
+    private void addAttachmentUploaded(String filename) {
+        attachmentBtn.setEnabled(false);
+
+        HorizontalLayout container = new HorizontalLayout();
+
+        Label fileNameLabel = new Label(filename);
+
+        Button deleteBtn = new Button(VaadinIcons.CLOSE);
+        deleteBtn.addClickListener(e -> removeAttachmentUploaded());
+        deleteBtn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+
+
+        container.addComponents(fileNameLabel, deleteBtn);
+
+        attachmentSection.removeAllComponents();
+        attachmentSection.addComponents(container);
+    }
+
+    private void removeAttachmentUploaded() {
+        attachmentSection.removeAllComponents();
+        fileUploaded = null;
+        attachmentBtn.setEnabled(true);
     }
 
     private void saveNewComment() {
@@ -98,6 +163,20 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
         newComment.setType(Comment.Type.COMMENT);
 
         commentTextArea.clear();
+
+        if (fileUploaded != null) {
+            try {
+                byte[] bytesFromAttachment = Files.readAllBytes(fileUploaded.toPath());
+                String attachmentName = fileUploaded.getName();
+
+                newComment.setAttachment(bytesFromAttachment);
+                newComment.setAttachmentName(attachmentName);
+
+                fileUploaded = null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         myUI.saveComment(newComment);
 
@@ -144,12 +223,12 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
     public OutputStream receiveUpload(String filename, String mimeType) {
         FileOutputStream fos;
 
-        fileUpload = new File("/var/tmp/bugrap/uploads/" + filename);
-
+        fileUploaded = new File("/var/tmp/bugrap/uploads/" + filename);
         try {
-            fos = new FileOutputStream(fileUpload);
+            fos = new FileOutputStream(fileUploaded);
         } catch (Exception e) {
             Notification.show("Error while uploading file", e.getMessage(), Notification.Type.ERROR_MESSAGE);
+            removeAttachmentUploaded();
             return null;
         }
 
@@ -158,6 +237,19 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
 
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
+        addAttachmentUploaded(succeededEvent.getFilename());
         Notification.show("NO WAY, IT WORKED!", Notification.Type.HUMANIZED_MESSAGE);
+    }
+
+    private float oldValue;
+
+    @Override
+    public void updateProgress(long readBytes, long contentLength) {
+        float foo = Math.round((float)readBytes / (float) contentLength * 100.0) / 100.0f;
+
+        oldValue = foo;
+        myUI.access(() -> {
+            progressBar.setValue(foo);
+        });
     }
 }
