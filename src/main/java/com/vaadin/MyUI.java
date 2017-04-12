@@ -2,6 +2,7 @@ package com.vaadin;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -25,6 +26,7 @@ import java.util.Set;
  */
 @Theme("mytheme")
 @Title("Vaadin Bugrap")
+@Push
 public class MyUI extends UI {
 
     /**
