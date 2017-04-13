@@ -107,9 +107,12 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
         customStatusOptions.addSelectionListener(e -> onSelectCustomStatusOptions());
 
         reportGrid.addSelectionListener( e -> onGridSelection(e.getAllSelectedItems()));
-
-
-        reportBugLink.addContextClickListener( e -> myUI.openReport(new Report()));
+        reportGrid.addItemClickListener(event -> {
+            if (event.getMouseEventDetails().isDoubleClick()) {
+                myUI.openReport(event.getItem());
+            }
+        });
+        reportGrid.add
     }
 
     private void onGridSelection(Set<Report> reportsSelected) {
