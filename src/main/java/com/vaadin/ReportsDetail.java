@@ -235,12 +235,4 @@ public class ReportsDetail extends ReportsDetailDesign {
         }
     }
 
-    private void setCombosEmptySelectionAllowed(boolean emptySelectionAllowed) {
-        priorityCombo.setEmptySelectionAllowed(emptySelectionAllowed);
-        typeCombo.setEmptySelectionAllowed(emptySelectionAllowed);
-        statusCombo.setEmptySelectionAllowed(emptySelectionAllowed);
-        assignedToCombo.setEmptySelectionAllowed(emptySelectionAllowed);
-        versionCombo.setEmptySelectionAllowed(emptySelectionAllowed);
-    }
-
 }
