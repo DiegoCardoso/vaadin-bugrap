@@ -131,8 +131,6 @@ public class ReportsDetail extends ReportsDetailDesign {
             commentList.forEach(comment -> commentsSession.addComponent(buildCommentComponent(comment)));
         }
 
-
-//        setCombosEmptySelectionAllowed(false);
         setCombosValues(reportSelected.getPriority(), reportSelected.getType(), reportSelected.getStatus(), reportSelected.getAssigned(), reportSelected.getVersion());
 
         reportUpdating = reportSelected;
@@ -209,7 +207,6 @@ public class ReportsDetail extends ReportsDetailDesign {
 
         commentsSessionPanel.setVisible(false);
 
-//        setCombosEmptySelectionAllowed(true);
         setCombosValues(sharedAttributes.getPriority(), sharedAttributes.getType(), sharedAttributes.getStatus(), sharedAttributes.getAssigned(), sharedAttributes.getVersion());
         reportUpdating = sharedAttributes;
     }
