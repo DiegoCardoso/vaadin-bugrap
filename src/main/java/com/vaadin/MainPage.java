@@ -1,5 +1,7 @@
 package com.vaadin;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -112,7 +114,6 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
                 myUI.openReport(event.getItem());
             }
         });
-        reportGrid.add
     }
 
     private void onGridSelection(Set<Report> reportsSelected) {
