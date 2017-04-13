@@ -1,10 +1,14 @@
 package com.vaadin;
 
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.bugrap.domain.entities.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -154,13 +158,28 @@ public class ReportsDetail extends ReportsDetailDesign {
         commentsArea.addComponents(commentTitle, commentField);
 
         if (comment.getAttachmentName() != null) {
-            commentsArea.addComponents(new Label(comment.getAttachmentName()));
+            commentsArea.addComponents(createDownloadAttachmentButton(comment));
         }
 
         root.addComponents(userIcon, commentsArea);
         root.setExpandRatio(commentsArea, 1);
 
         return root;
+    }
+
+    private Button createDownloadAttachmentButton(Comment comment) {
+        Button attachmentBtn = new Button(comment.getAttachmentName());
+        attachmentBtn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+
+        StreamResource resource = createResource(comment.getAttachment(), comment.getAttachmentName());
+        FileDownloader fileDownloader = new FileDownloader(resource);
+        fileDownloader.extend(attachmentBtn);
+
+        return attachmentBtn;
+    }
+
+    private StreamResource createResource(byte[] attachment, String fileName) {
+        return new StreamResource(() -> new ByteArrayInputStream(attachment), fileName);
     }
 
     private void showMultipleReportsDetails() {
