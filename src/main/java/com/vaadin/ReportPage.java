@@ -241,15 +241,13 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
         Notification.show("NO WAY, IT WORKED!", Notification.Type.HUMANIZED_MESSAGE);
     }
 
-    private float oldValue;
 
     @Override
     public void updateProgress(long readBytes, long contentLength) {
-        float foo = Math.round((float)readBytes / (float) contentLength * 100.0) / 100.0f;
+        float progressRate = Math.round((float)readBytes / (float) contentLength * 100.0f) / 100.0f;
 
-        oldValue = foo;
         myUI.access(() -> {
-            progressBar.setValue(foo);
+            progressBar.setValue(progressRate);
         });
     }
 }
