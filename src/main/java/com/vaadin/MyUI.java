@@ -124,6 +124,29 @@ public class MyUI extends UI {
         return reporterSignedOn;
     }
 
+    public long countClosedReports (Project project) {
+        return  repo.countClosedReports(project);
+    }
+
+    public long countClosedReports (ProjectVersion projectVersion) {
+        return repo.countClosedReports(projectVersion);
+    }
+
+    public long countOpenedReports (Project project) {
+        return  repo.countOpenedReports(project);
+    }
+
+    public long countOpenedReports (ProjectVersion projectVersion) {
+        return repo.countOpenedReports(projectVersion);
+    }
+
+    public long countUnassignedReports (Project project) {
+        return  repo.countUnassignedReports(project);
+    }
+
+    public long countUnassignedReports (ProjectVersion projectVersion) {
+        return repo.countUnassignedReports(projectVersion);
+    }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)

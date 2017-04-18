@@ -1,7 +1,5 @@
 package com.vaadin;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.event.ShortcutListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -10,6 +8,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.renderers.DateRenderer;
+import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.bugrap.domain.entities.Project;
 import org.vaadin.bugrap.domain.entities.ProjectVersion;
 import org.vaadin.bugrap.domain.entities.Report;
@@ -36,6 +35,10 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
     private ProjectVersion selectedProjectVersion;
     private Reporter selectedAssignee;
     private Set<Report.Status> selectedStatuses;
+
+    private Label closedReportsLabel;
+    private Label openedReportsLabel;
+    private Label unassignedReportsLabel;
 
     public MainPage(MyUI myUI, Reporter reporter) {
         this.myUI = myUI;
@@ -95,6 +98,23 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
         reportsDetail.setVisible(false);
         tableDetailsSession.addComponent(reportsDetail);
 
+        closedReportsLabel = new Label();
+        closedReportsLabel.setDescription("Closed reports");
+        closedReportsLabel.setWidth("100%");
+        closedReportsLabel.addStyleName("project-progress_closed");
+
+        openedReportsLabel = new Label();
+        openedReportsLabel.setDescription("Opened reports");
+        openedReportsLabel.setWidth("100%");
+        openedReportsLabel.addStyleName("project-progress_opened");
+
+        unassignedReportsLabel = new Label();
+        unassignedReportsLabel.setDescription("Unassigned reports");
+        unassignedReportsLabel.setWidth("100%");
+        unassignedReportsLabel.addStyleName("project-progress_unassigned");
+
+        projectProgressContainer.addComponents(openedReportsLabel, closedReportsLabel, unassignedReportsLabel);
+
         loadProject(firstProject);
 
         // Adding listeners
@@ -114,6 +134,8 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
                 myUI.openReport(event.getItem());
             }
         });
+
+
     }
 
     private void onGridSelection(Set<Report> reportsSelected) {
@@ -148,6 +170,31 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
         selectedProjectVersion = firstVersion;
 
         setReportGridItems();
+        showProjectProgressBar();
+    }
+
+    private void showProjectProgressBar() {
+        long countClosedReports, countOpenedReports, countUnassignedReports, countOfReports;
+
+        if (selectedProjectVersion.getVersion() == "All versions") {
+            countClosedReports = myUI.countClosedReports(selectedProject);
+            countOpenedReports = myUI.countOpenedReports(selectedProject);
+            countUnassignedReports = myUI.countUnassignedReports(selectedProject);
+        } else {
+            countClosedReports = myUI.countClosedReports(selectedProjectVersion);
+            countOpenedReports = myUI.countOpenedReports(selectedProjectVersion);
+            countUnassignedReports = myUI.countUnassignedReports(selectedProjectVersion);
+        }
+        countOfReports = countClosedReports + countOpenedReports + countOpenedReports;
+
+        closedReportsLabel.setValue(String.valueOf(countClosedReports));
+        projectProgressContainer.setExpandRatio(closedReportsLabel, countClosedReports * 1.0f / countOfReports);
+
+        openedReportsLabel.setValue(String.valueOf(countOpenedReports));
+        projectProgressContainer.setExpandRatio(openedReportsLabel, countOpenedReports * 1.0f / countOfReports);
+
+        unassignedReportsLabel.setValue(String.valueOf(countUnassignedReports));
+        projectProgressContainer.setExpandRatio(unassignedReportsLabel, countUnassignedReports * 1.0f / countOfReports);
     }
 
     private void setReportGridItems() {
@@ -159,6 +206,7 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
         selectedProject = selectedProjectVersion.getProject();
 
         reportGrid.setItems(myUI.getReportsByProject(selectedProject, selectedProjectVersion));
+        showProjectProgressBar();
     }
 
     private void onChangeProject() {

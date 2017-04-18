@@ -39,6 +39,7 @@ public class MainPageDesign extends VerticalLayout {
     protected Label searchCloseLabel;
     protected HorizontalLayout reportsDetails;
     protected ComboBox<org.vaadin.bugrap.domain.entities.ProjectVersion> projectVersionsCombo;
+    protected HorizontalLayout projectProgressContainer;
     protected HorizontalLayout reportsFiltering;
     protected CssLayout assigneesOptions;
     protected Button everyoneAssigneeBtn;

@@ -26,11 +26,12 @@
      <vaadin-label plain-text _id="searchCloseLabel"></vaadin-label>
     </vaadin-horizontal-layout>
    </vaadin-horizontal-layout>
-   <vaadin-horizontal-layout _id="reportsDetails">
+   <vaadin-horizontal-layout width-full _id="reportsDetails">
     <vaadin-label plain-text>
       Reports for 
     </vaadin-label>
     <vaadin-combo-box empty-selection-allowed="false" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="projectVersionsCombo"></vaadin-combo-box>
+    <vaadin-horizontal-layout spacing="false" width-full _id="projectProgressContainer" :expand></vaadin-horizontal-layout>
    </vaadin-horizontal-layout>
    <vaadin-horizontal-layout _id="reportsFiltering">
     <vaadin-label plain-text>
