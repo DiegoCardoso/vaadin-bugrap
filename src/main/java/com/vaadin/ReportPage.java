@@ -238,7 +238,6 @@ public class ReportPage extends VerticalLayout implements View, ReportUpdateList
     @Override
     public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
         addAttachmentUploaded(succeededEvent.getFilename());
-        Notification.show("NO WAY, IT WORKED!", Notification.Type.HUMANIZED_MESSAGE);
     }
 
 
