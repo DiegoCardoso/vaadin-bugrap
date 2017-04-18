@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -71,7 +72,7 @@ public class ReportsDetail extends ReportsDetailDesign {
     private void updateOneReport() {
         Report reportToUpdate = reports.iterator().next();
 
-        ProjectVersion projectVersion = projectVersions.stream().filter(pv -> pv.getVersion() == versionCombo.getValue()).findFirst().get();
+        ProjectVersion projectVersion = getProjectVersionFromCombo();
 
         reportToUpdate.setPriority(priorityCombo.getValue());
         reportToUpdate.setType(typeCombo.getValue());
@@ -83,8 +84,13 @@ public class ReportsDetail extends ReportsDetailDesign {
         reportUpdateListener.onReportUpdate(reportToUpdate);
     }
 
+    private ProjectVersion getProjectVersionFromCombo() {
+        Optional<ProjectVersion> firstFound = projectVersions.stream().filter(pv -> pv.getVersion() == versionCombo.getValue()).findFirst();
+        return firstFound.isPresent() ? firstFound.get() : null;
+    }
+
     private void updateMultipleReports() {
-        ProjectVersion projectVersion = projectVersions.stream().filter(pv -> pv.getVersion() == versionCombo.getValue()).findFirst().get();
+        ProjectVersion projectVersion = getProjectVersionFromCombo();
 
         final Stream<Report> reportUpdatedStream = reports.stream().map(report -> {
             if (priorityCombo.getValue() != null) report.setPriority(priorityCombo.getValue());
