@@ -10,10 +10,7 @@ import org.vaadin.bugrap.domain.entities.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.DateFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +27,7 @@ public class ReportsDetail extends ReportsDetailDesign {
     private Set<ProjectVersion> projectVersions;
 
     final DateFormat dateTimeFormatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.ENGLISH);
+    private Project project;
 
     public ReportsDetail(MyUI myUI, ReportUpdateListener listener) {
         this.myUI = myUI;
@@ -72,52 +70,54 @@ public class ReportsDetail extends ReportsDetailDesign {
     private void updateOneReport() {
         Report reportToUpdate = reports.iterator().next();
 
-        ProjectVersion projectVersion = getProjectVersionFromCombo();
-
         reportToUpdate.setPriority(priorityCombo.getValue());
         reportToUpdate.setType(typeCombo.getValue());
         reportToUpdate.setStatus(statusCombo.getValue());
         reportToUpdate.setAssigned(assignedToCombo.getValue());
-        reportToUpdate.setVersion(projectVersion);
+        reportToUpdate.setVersion(versionCombo.getValue());
 
         reportToUpdate = myUI.saveReport(reportToUpdate);
         reportUpdateListener.onReportUpdate(reportToUpdate);
-    }
 
-    private ProjectVersion getProjectVersionFromCombo() {
-        Optional<ProjectVersion> firstFound = projectVersions.stream().filter(pv -> pv.getVersion() == versionCombo.getValue()).findFirst();
-        return firstFound.isPresent() ? firstFound.get() : null;
+        Set<Report> updatedReports = new HashSet<>();
+        updatedReports.add(reportToUpdate);
+        setReports(updatedReports, this.project);
+
+        Notification.show("Report updated", Notification.Type.HUMANIZED_MESSAGE);
     }
 
     private void updateMultipleReports() {
-        ProjectVersion projectVersion = getProjectVersionFromCombo();
 
         final Stream<Report> reportUpdatedStream = reports.stream().map(report -> {
             if (priorityCombo.getValue() != null) report.setPriority(priorityCombo.getValue());
             if (typeCombo.getValue() != null) report.setType(typeCombo.getValue());
             if (statusCombo.getValue() != null) report.setStatus(statusCombo.getValue());
             if (assignedToCombo.getValue() != null) report.setAssigned(assignedToCombo.getValue());
-            if (versionCombo.getValue() != null) report.setVersion(projectVersion);
+            if (versionCombo.getValue() != null) report.setVersion(versionCombo.getValue());
 
             return myUI.saveReport(report);
         });
 
         final Set<Report> reportsUpdated = reportUpdatedStream.collect(Collectors.toSet());
         reportUpdateListener.onReportsUpdate(reportsUpdated);
+
+        setReports(reportsUpdated, this.project);
+        Notification.show("Reports updated", Notification.Type.HUMANIZED_MESSAGE);
+
     }
 
     public void setReports(Set<Report> reports, Project project) {
         this.reports = reports;
+        this.project = project;
+
+        projectVersions = myUI.getVersionsByProject(project);
+        versionCombo.setItems(projectVersions.stream());
 
         if (reports.size() == 1) {
             showOneReportDetail();
         } else {
             showMultipleReportsDetails();
         }
-
-        projectVersions = myUI.getVersionsByProject(project);
-        versionCombo.setItems(projectVersions.stream().map(projectVersion -> projectVersion.getVersion()));
-
     }
 
     private void showOneReportDetail() {
@@ -230,12 +230,8 @@ public class ReportsDetail extends ReportsDetailDesign {
         assignedToCombo.clear();
         assignedToCombo.setValue(assigned);
 
-        if (projectVersion == null) {
-            versionCombo.clear();
-            versionCombo.setValue("");
-        } else {
-            versionCombo.setValue(projectVersion.getVersion());
-        }
+        versionCombo.clear();
+        versionCombo.setValue(projectVersion);
     }
 
 }

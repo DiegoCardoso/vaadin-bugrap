@@ -32,7 +32,7 @@ public class ReportsDetailDesign extends VerticalLayout {
     protected ComboBox<org.vaadin.bugrap.domain.entities.Report.Type> typeCombo;
     protected ComboBox<org.vaadin.bugrap.domain.entities.Report.Status> statusCombo;
     protected ComboBox<org.vaadin.bugrap.domain.entities.Reporter> assignedToCombo;
-    protected ComboBox<String> versionCombo;
+    protected ComboBox<org.vaadin.bugrap.domain.entities.ProjectVersion> versionCombo;
     protected Button updateReportsBtn;
     protected Button revertReportsBtn;
     protected Panel commentsSessionPanel;
