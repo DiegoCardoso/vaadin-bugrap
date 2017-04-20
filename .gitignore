@@ -1,0 +1,13 @@
+.designer/*
+bugrap.tmp/
+target/generated-sources/
+target/tmp/
+target/classes/
+.idea/workspace.xml
+.idea/**/*.iws
+.idea/**/tasks.xml
+target/
+*.DS_Store
+*.iml
+.idea
+.designer
