@@ -6,36 +6,36 @@
   <meta name="vaadin-version" content="8.0.2">
  </head>
  <body>
-  <vaadin-vertical-layout spacing="false" size-full margin="false">
-   <vaadin-horizontal-layout _id="oneItemSelectedTitleContainer">
-    <vaadin-button icon="fonticon://Vaadin-Icons/e7de" style-name="borderless" plain-text _id="openReportBtn"></vaadin-button>
-    <vaadin-label style-name="bold" plain-text _id="reportSummary">
+  <vaadin-vertical-layout style-name="reports-detail" spacing="false" size-full margin="false">
+   <vaadin-horizontal-layout style-name="report-title" width-full _id="oneItemSelectedTitleContainer">
+    <vaadin-button icon="fonticon://Vaadin-Icons/e7de" style-name="borderless small" plain-text _id="openReportBtn"></vaadin-button>
+    <vaadin-label style-name="bold" plain-text _id="reportSummary" :middle :expand>
       Report selected 
     </vaadin-label>
    </vaadin-horizontal-layout>
-   <vaadin-horizontal-layout _id="multipleItemsSelectedTitleContainer">
-    <vaadin-label style-name="bold" plain-text _id="numberOfReportsSelected">
+   <vaadin-horizontal-layout style-name="report-title" width-full _id="multipleItemsSelectedTitleContainer" :middle>
+    <vaadin-label style-name="bold" plain-text _id="numberOfReportsSelected" :middle>
       2 reports selected 
     </vaadin-label>
-    <vaadin-label style-name="small" plain-text>
+    <vaadin-label style-name="small" plain-text :middle :expand>
       - Select a single report to view contents 
     </vaadin-label>
    </vaadin-horizontal-layout>
-   <vaadin-horizontal-layout _id="updateReportFormContainer">
-    <vaadin-combo-box caption="Priority" data-item-type="org.vaadin.bugrap.domain.entities.Report.Priority" _id="priorityCombo"></vaadin-combo-box>
-    <vaadin-combo-box caption="Type" data-item-type="org.vaadin.bugrap.domain.entities.Report.Type" _id="typeCombo"></vaadin-combo-box>
-    <vaadin-combo-box caption="Status" data-item-type="org.vaadin.bugrap.domain.entities.Report.Status" _id="statusCombo"></vaadin-combo-box>
-    <vaadin-combo-box caption="Assigned to" data-item-type="org.vaadin.bugrap.domain.entities.Reporter" _id="assignedToCombo"></vaadin-combo-box>
-    <vaadin-combo-box caption="Version" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="versionCombo"></vaadin-combo-box>
-    <vaadin-button plain-text _id="updateReportsBtn" :bottom :center>
+   <vaadin-horizontal-layout style-name="report-form" size-full _id="updateReportFormContainer" :middle :center :expand>
+    <vaadin-combo-box caption="Priority" data-item-type="org.vaadin.bugrap.domain.entities.Report.Priority" _id="priorityCombo" :bottom :expand></vaadin-combo-box>
+    <vaadin-combo-box caption="Type" data-item-type="org.vaadin.bugrap.domain.entities.Report.Type" _id="typeCombo" :bottom :expand></vaadin-combo-box>
+    <vaadin-combo-box caption="Status" data-item-type="org.vaadin.bugrap.domain.entities.Report.Status" _id="statusCombo" :bottom :expand></vaadin-combo-box>
+    <vaadin-combo-box caption="Assigned to" data-item-type="org.vaadin.bugrap.domain.entities.Reporter" _id="assignedToCombo" :bottom :expand></vaadin-combo-box>
+    <vaadin-combo-box caption="Version" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="versionCombo" :bottom :expand></vaadin-combo-box>
+    <vaadin-button plain-text _id="updateReportsBtn" :bottom>
       Update 
     </vaadin-button>
-    <vaadin-button plain-text _id="revertReportsBtn" :bottom :center>
+    <vaadin-button plain-text _id="revertReportsBtn" :bottom>
       Revert 
     </vaadin-button>
    </vaadin-horizontal-layout>
-   <vaadin-panel size-full _id="commentsSessionPanel">
-    <vaadin-vertical-layout _id="commentsSession"></vaadin-vertical-layout>
+   <vaadin-panel style-name="report-comments" size-auto _id="commentsSessionPanel" :expand>
+    <vaadin-vertical-layout style-name="reports-comments-container" size-full _id="commentsSession"></vaadin-vertical-layout>
    </vaadin-panel>
   </vaadin-vertical-layout>
  </body>

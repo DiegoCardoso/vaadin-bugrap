@@ -142,7 +142,13 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
             return;
         }
 
-        tableDetailsSession.setSplitPosition(60);
+        boolean hasReportSelectedComment = reportsSelected.size() == 1 && myUI.getCommentsByReport(reportsSelected.iterator().next()).size() == 0;
+        if (reportsSelected.size() > 1 || hasReportSelectedComment) {
+            tableDetailsSession.setSplitPosition(80);
+        } else {
+            tableDetailsSession.setSplitPosition(55);
+        }
+
         reportsDetail.setVisible(true);
         reportsDetail.setReports(reportsSelected, selectedProject);
     }

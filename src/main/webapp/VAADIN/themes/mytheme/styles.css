@@ -12508,3 +12508,49 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .bugrap-filters {
 	padding: 10px;
 }
+
+.mytheme .reports-detail {
+	background-color: #dfe5ec;
+}
+
+.mytheme .report-title {
+	background-color: #a1b1c1;
+	color: #FFF;
+	padding: 0.2em 0.5em;
+	min-height: 40px;
+}
+
+.mytheme .report-form {
+	padding: 1em 0.5em;
+	padding-bottom: 2em;
+}
+
+.mytheme .report-comments {
+	height: calc(100% - 1em) !important;
+	width: calc(100% - 1em) !important;
+	margin: 0.5em;
+}
+
+.mytheme .reports-comments-container {
+	width: 100%;
+}
+
+.mytheme .v-slot-report-comments-icon {
+	color: #848484;
+}
+
+.mytheme .v-slot-report-comments-title {
+	font-size: 0.9em;
+	font-weight: bolder;
+	color: #848484;
+}
+
+.mytheme .v-slot-report-comments-text {
+	font-size: 0.85em;
+	padding: 0.5em 0;
+}
+
+.mytheme .v-slot-report-comments {
+	width: 100%;
+	border-bottom: 1px solid #efefef;
+}

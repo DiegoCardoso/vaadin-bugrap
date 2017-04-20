@@ -148,9 +148,11 @@ public class ReportsDetail extends ReportsDetailDesign {
         root.setSizeFull();
         root.setWidth("100%");
         root.setSpacing(true);
+        root.addStyleName("report-comments");
 
         Label userIcon = new Label();
         userIcon.setIcon(VaadinIcons.USER);
+        userIcon.addStyleName("report-comments-icon");
 
         VerticalLayout commentsArea = new VerticalLayout();
         commentsArea.setMargin(false);
@@ -158,8 +160,12 @@ public class ReportsDetail extends ReportsDetailDesign {
         commentsArea.setSpacing(false);
 
         Label commentTitle = new Label(String.format("%s (%s)", comment.getAuthor(), dateTimeFormatter.format(comment.getTimestamp())));
-        Label commentField = new Label(comment.getComment());
-        commentsArea.addComponents(commentTitle, commentField);
+        commentTitle.addStyleName("report-comments-title");
+
+        Label commentText = new Label(comment.getComment());
+        commentText.addStyleName("report-comments-text");
+
+        commentsArea.addComponents(commentTitle, commentText);
 
         if (comment.getAttachmentName() != null) {
             commentsArea.addComponents(createDownloadAttachmentButton(comment));
@@ -174,6 +180,7 @@ public class ReportsDetail extends ReportsDetailDesign {
     private Button createDownloadAttachmentButton(Comment comment) {
         Button attachmentBtn = new Button(comment.getAttachmentName());
         attachmentBtn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+        attachmentBtn.setIcon(VaadinIcons.PAPERCLIP);
 
         StreamResource resource = createResource(comment.getAttachment(), comment.getAttachmentName());
         FileDownloader fileDownloader = new FileDownloader(resource);
