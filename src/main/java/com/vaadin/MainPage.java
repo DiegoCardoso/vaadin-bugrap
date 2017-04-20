@@ -47,18 +47,11 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
         reportsDetail = new ReportsDetail(myUI, this);
 
         //Setting icons for labels
-        logoutLink.setIcon(VaadinIcons.KEY);
         reportBugLink.setIcon(VaadinIcons.BUG);
         requestFeatureLink.setIcon(VaadinIcons.LIGHTBULB);
         manageProjectLink.setIcon(VaadinIcons.COG);
 
-        accountNameLabel.setCaption(reporter.getName());
-
-        searchIconLabel.setIcon(VaadinIcons.SEARCH);
-        searchIconLabel.setCaption("");
-
-        searchCloseLabel.setIcon(VaadinIcons.CLOSE);
-        searchCloseLabel.setCaption("");
+        accountNameBtn.setCaption(reporter.getName());
 
         //Add popup button for custom status selection
         customStatusPopupBtn = new PopupButton("Custom");
@@ -101,17 +94,17 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
         closedReportsLabel = new Label();
         closedReportsLabel.setDescription("Closed reports");
         closedReportsLabel.setWidth("100%");
-        closedReportsLabel.addStyleName("project-progress_closed");
+        closedReportsLabel.addStyleName("project-progress project-progress--closed ");
 
         openedReportsLabel = new Label();
         openedReportsLabel.setDescription("Opened reports");
         openedReportsLabel.setWidth("100%");
-        openedReportsLabel.addStyleName("project-progress_opened");
+        openedReportsLabel.addStyleName("project-progress project-progress--opened");
 
         unassignedReportsLabel = new Label();
         unassignedReportsLabel.setDescription("Unassigned reports");
         unassignedReportsLabel.setWidth("100%");
-        unassignedReportsLabel.addStyleName("project-progress_unassigned");
+        unassignedReportsLabel.addStyleName("project-progress project-progress--unassigned");
 
         projectProgressContainer.addComponents(openedReportsLabel, closedReportsLabel, unassignedReportsLabel);
 

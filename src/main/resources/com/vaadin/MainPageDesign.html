@@ -7,33 +7,36 @@
   <meta name="package-mapping" content="org_vaadin_hene_popupbutton:org.vaadin.hene.popupbutton">
  </head>
  <body>
-  <vaadin-vertical-layout margin="false">
-   <vaadin-horizontal-layout width-full margin _id="header">
-    <vaadin-combo-box empty-selection-allowed="false" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand></vaadin-combo-box>
-    <vaadin-label icon="fonticon://Vaadin-Icons/e80d" caption="Marc Manager" plain-text _id="accountNameLabel"></vaadin-label>
-    <vaadin-link caption="Logout" _id="logoutLink"></vaadin-link>
+  <vaadin-vertical-layout spacing="false" margin="false">
+   <vaadin-horizontal-layout style-name="bugrap-header" width-full margin _id="header">
+    <vaadin-combo-box empty-selection-allowed="false" style-name="bugrap-header__projects borderless" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand></vaadin-combo-box>
+    <vaadin-button icon="fonticon://Vaadin-Icons/e80d" style-name="borderless small" plain-text _id="accountNameBtn" :middle :center>
+      Marc Manager 
+    </vaadin-button>
+    <vaadin-button icon="fonticon://Vaadin-Icons/e6ac" style-name="borderless small" plain-text :middle :center>
+      Logout 
+    </vaadin-button>
    </vaadin-horizontal-layout>
-   <vaadin-horizontal-layout _id="menu">
-    <vaadin-link caption="Report a bug" _id="reportBugLink"></vaadin-link>
-    <vaadin-link caption="Request a feature" _id="requestFeatureLink"></vaadin-link>
-    <vaadin-link caption="Manage project" _id="manageProjectLink"></vaadin-link>
-    <vaadin-label plain-text>
+   <vaadin-horizontal-layout style-name="bugrap-menu" width-full _id="menu">
+    <vaadin-link caption="Report a bug" style-name="bugrap-menu__item" _id="reportBugLink" :middle :center></vaadin-link>
+    <vaadin-link caption="Request a feature" style-name="bugrap-menu__item" _id="requestFeatureLink" :middle :center></vaadin-link>
+    <vaadin-link caption="Manage project" style-name="bugrap-menu__item" _id="manageProjectLink" :middle :center></vaadin-link>
+    <vaadin-label style-name="bugrap-menu__label" plain-text :middle :center>
       123 
     </vaadin-label>
-    <vaadin-horizontal-layout _id="searchReportLayout" :middle :right>
-     <vaadin-label plain-text _id="searchIconLabel"></vaadin-label>
-     <vaadin-text-field placeholder="Search reports..." _id="searchField"></vaadin-text-field>
-     <vaadin-label plain-text _id="searchCloseLabel"></vaadin-label>
-    </vaadin-horizontal-layout>
+    <vaadin-css-layout style-name="v-component-group" width-full :middle :right :expand>
+     <vaadin-text-field icon="fonticon://Vaadin-Icons/e805" style-name="inline-icon" placeholder="Search reports..." width="95%" _id="searchField"></vaadin-text-field>
+     <vaadin-button icon="fonticon://Vaadin-Icons/e7ad" style-name="borderless icon-only" plain-text _id="resetSearchBtn"></vaadin-button>
+    </vaadin-css-layout>
    </vaadin-horizontal-layout>
-   <vaadin-horizontal-layout width-full _id="reportsDetails">
-    <vaadin-label plain-text>
+   <vaadin-horizontal-layout style-name="bugrap-project-versions" width-full _id="reportsDetails">
+    <vaadin-label plain-text :middle>
       Reports for 
     </vaadin-label>
-    <vaadin-combo-box empty-selection-allowed="false" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="projectVersionsCombo"></vaadin-combo-box>
-    <vaadin-horizontal-layout spacing="false" width-full _id="projectProgressContainer" :expand></vaadin-horizontal-layout>
+    <vaadin-combo-box empty-selection-allowed="false" style-name="borderless" data-item-type="org.vaadin.bugrap.domain.entities.ProjectVersion" _id="projectVersionsCombo"></vaadin-combo-box>
+    <vaadin-horizontal-layout style-name="bugrap-project-versions__progress" spacing="false" width-full _id="projectProgressContainer" :middle :right :expand></vaadin-horizontal-layout>
    </vaadin-horizontal-layout>
-   <vaadin-horizontal-layout _id="reportsFiltering">
+   <vaadin-horizontal-layout style-name="bugrap-filters" _id="reportsFiltering">
     <vaadin-label plain-text>
       Assignees 
     </vaadin-label>

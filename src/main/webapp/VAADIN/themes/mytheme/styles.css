@@ -12435,7 +12435,60 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
-.mytheme .mystyle {
-	background-color: yellow;
-	color: blue;
+.mytheme .bugrap-header {
+	padding: 10px;
+	background-color: #dfe5ec;
+}
+
+.mytheme .bugrap-menu {
+	padding: 10px;
+	background-color: #d4dbe2;
+	border-bottom: 2px solid #a1b1c1;
+	margin-bottom: 1em;
+}
+
+.mytheme .bugrap-menu .bugrap-menu__item {
+	text-decoration: none;
+	color: #464646;
+}
+
+.mytheme .bugrap-menu .bugrap-menu__item:hover {
+	color: #969696;
+}
+
+.mytheme .bugrap-menu .bugrap-menu__label {
+	background-color: #464646;
+	color: #fff;
+	border-radius: 1em;
+	padding: 0.2em 0.5em;
+	font-size: 0.8em;
+}
+
+.mytheme .bugrap-project-versions {
+	padding: 0 10px;
+	margin-bottom: 10px;
+}
+
+.mytheme .bugrap-project-versions .bugrap-project-versions__progress {
+	border-radius: 1em;
+	overflow: hidden;
+}
+
+.mytheme .bugrap-project-versions .bugrap-project-versions__progress .project-progress {
+	text-align: center;
+	font-weight: bold;
+	font-size: 0.9em;
+	padding: 0.1em;
+}
+
+.mytheme .bugrap-project-versions .bugrap-project-versions__progress .project-progress--opened {
+	background-color: #a1b1c1;
+}
+
+.mytheme .bugrap-project-versions .bugrap-project-versions__progress .project-progress--closed {
+	background-color: #d1e7cd;
+}
+
+.mytheme .bugrap-project-versions .bugrap-project-versions__progress .project-progress--unassigned {
+	background-color: #ef786f;
 }

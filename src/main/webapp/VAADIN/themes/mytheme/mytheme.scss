@@ -35,8 +35,60 @@
   @include valo;
 
   // Insert your own theme rules here
-  .mystyle {
-    background-color:yellow;
-    color:blue;
+  .bugrap-header {
+    padding: 10px;
+    background-color: #dfe5ec;
+  }
+
+  .bugrap-menu {
+    padding: 10px;
+    background-color: #d4dbe2;
+    border-bottom: 2px solid #a1b1c1;
+    margin-bottom: 1em;
+
+    .bugrap-menu__item {
+      text-decoration: none;
+      color: #464646;
+
+      &:hover {
+        color: #969696;
+      }
+    }
+
+    .bugrap-menu__label {
+      background-color: #464646;
+      color: #fff;
+      border-radius: 1em;
+      padding:0.2em 0.5em;
+      font-size: 0.8em;
+    }
+
+  }
+
+  .bugrap-project-versions {
+    padding: 0 10px;
+    margin-bottom: 10px;
+    .bugrap-project-versions__progress {
+      border-radius: 1em;
+      overflow: hidden;
+      .project-progress {
+        text-align: center;
+        font-weight: bold;
+        font-size: 0.9em;
+        padding: 0.1em;
+      }
+
+      .project-progress--opened {
+        background-color: #a1b1c1;
+      }
+
+      .project-progress--closed {
+        background-color: #d1e7cd;
+      }
+
+      .project-progress--unassigned{
+        background-color: #ef786f;
+      }
+    }
   }
 }
