@@ -53,8 +53,12 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
 
         accountNameBtn.setCaption(reporter.getName());
 
+        everyoneAssigneeBtn.addStyleName("button-flat--selected");
+        allKindsStatusBtn.addStyleName("button-flat--selected");
+
         //Add popup button for custom status selection
         customStatusPopupBtn = new PopupButton("Custom");
+        customStatusPopupBtn.addStyleName("button-flat");
         VerticalLayout customStatusLayout = new VerticalLayout();
         customStatusPopupBtn.setContent(customStatusLayout);
 
@@ -211,8 +215,8 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
     }
 
     private void onClickOnlyMeBtn() {
-        onlyMeAssigneeBtn.addStyleName("selected");
-        everyoneAssigneeBtn.removeStyleName("selected");
+        onlyMeAssigneeBtn.addStyleName("button-flat--selected");
+        everyoneAssigneeBtn.removeStyleName("button-flat--selected");
 
         selectedProjectVersion = projectVersionsCombo.getSelectedItem().get();
         selectedProject = selectedProjectVersion.getProject();
@@ -223,8 +227,8 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
     }
 
     private void onClickEveryoneBtn() {
-        everyoneAssigneeBtn.addStyleName("selected");
-        onlyMeAssigneeBtn.removeStyleName("selected");
+        everyoneAssigneeBtn.addStyleName("button-flat--selected");
+        onlyMeAssigneeBtn.removeStyleName("button-flat--selected");
 
         selectedProjectVersion = projectVersionsCombo.getSelectedItem().get();
         selectedProject = selectedProjectVersion.getProject();
@@ -237,11 +241,19 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
     private void onSelectCustomStatusOptions() {
         selectedStatuses = customStatusOptions.getSelectedItems();
 
+        allKindsStatusBtn.removeStyleName("button-flat--selected");
+        customStatusPopupBtn.addStyleName("button-flat--selected");
+        openStatusBtn.removeStyleName("button-flat--selected");
+
         reportGrid.setItems(myUI.filterReportsByProject(selectedProject, selectedProjectVersion, selectedStatuses, selectedAssignee));
     }
 
     private void onClickAllKindsStatusBtn() {
         customStatusOptions.select(Report.Status.values());
+
+        allKindsStatusBtn.addStyleName("button-flat--selected");
+        customStatusPopupBtn.removeStyleName("button-flat--selected");
+        openStatusBtn.removeStyleName("button-flat--selected");
 
         selectedStatuses = customStatusOptions.getSelectedItems();
 
@@ -251,6 +263,10 @@ public class MainPage extends MainPageDesign implements ReportUpdateListener, Vi
     private void onClickOpenStatusBtn() {
         customStatusOptions.deselectAll();
         customStatusOptions.select(Report.Status.OPEN);
+
+        allKindsStatusBtn.removeStyleName("button-flat--selected");
+        customStatusPopupBtn.removeStyleName("button-flat--selected");
+        openStatusBtn.addStyleName("button-flat--selected");
 
         selectedStatuses = customStatusOptions.getSelectedItems();
 

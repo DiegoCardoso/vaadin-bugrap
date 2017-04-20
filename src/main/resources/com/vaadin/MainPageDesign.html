@@ -7,7 +7,7 @@
   <meta name="package-mapping" content="org_vaadin_hene_popupbutton:org.vaadin.hene.popupbutton">
  </head>
  <body>
-  <vaadin-vertical-layout spacing="false" margin="false">
+  <vaadin-vertical-layout spacing="false" size-full margin="false">
    <vaadin-horizontal-layout style-name="bugrap-header" width-full margin _id="header">
     <vaadin-combo-box empty-selection-allowed="false" style-name="bugrap-header__projects borderless" width-full data-item-type="org.vaadin.bugrap.domain.entities.Project" _id="projectSelectorCombo" :expand></vaadin-combo-box>
     <vaadin-button icon="fonticon://Vaadin-Icons/e80d" style-name="borderless small" plain-text _id="accountNameBtn" :middle :center>
@@ -37,30 +37,30 @@
     <vaadin-horizontal-layout style-name="bugrap-project-versions__progress" spacing="false" width-full _id="projectProgressContainer" :middle :right :expand></vaadin-horizontal-layout>
    </vaadin-horizontal-layout>
    <vaadin-horizontal-layout style-name="bugrap-filters" _id="reportsFiltering">
-    <vaadin-label plain-text>
+    <vaadin-label plain-text :middle :center>
       Assignees 
     </vaadin-label>
     <vaadin-css-layout style-name="v-component-group" _id="assigneesOptions">
-     <vaadin-button plain-text _id="everyoneAssigneeBtn">
+     <vaadin-button style-name="button-flat" plain-text _id="everyoneAssigneeBtn">
        Everyone 
      </vaadin-button>
-     <vaadin-button plain-text _id="onlyMeAssigneeBtn">
+     <vaadin-button style-name="button-flat" plain-text _id="onlyMeAssigneeBtn">
        Only me 
      </vaadin-button>
     </vaadin-css-layout>
-    <vaadin-label plain-text>
+    <vaadin-label plain-text :middle :center>
       Status 
     </vaadin-label>
     <vaadin-css-layout style-name="v-component-group" _id="statusOptions">
-     <vaadin-button plain-text _id="allKindsStatusBtn">
+     <vaadin-button style-name="button-flat" plain-text _id="allKindsStatusBtn">
        All kinds 
      </vaadin-button>
-     <vaadin-button plain-text _id="openStatusBtn">
+     <vaadin-button style-name="button-flat" plain-text _id="openStatusBtn">
        Open 
      </vaadin-button>
     </vaadin-css-layout>
    </vaadin-horizontal-layout>
-   <vaadin-vertical-split-panel height="500px" split-position="100%" _id="tableDetailsSession"></vaadin-vertical-split-panel>
+   <vaadin-vertical-split-panel split-position="100%" _id="tableDetailsSession" :expand></vaadin-vertical-split-panel>
   </vaadin-vertical-layout>
  </body>
 </html>

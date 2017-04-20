@@ -91,4 +91,20 @@
       }
     }
   }
+
+  .button-flat {
+    background: #dfe5ec;
+    background-image: none;
+    border: none;
+    margin-right: 2px;
+
+    &.button-flat--selected {
+      color: #FFF;
+      background-color: #a1b1c1;
+    }
+  }
+
+  .bugrap-filters {
+    padding: 10px;
+  }
 }

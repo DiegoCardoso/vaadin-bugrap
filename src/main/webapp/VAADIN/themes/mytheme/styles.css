@@ -12492,3 +12492,19 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .bugrap-project-versions .bugrap-project-versions__progress .project-progress--unassigned {
 	background-color: #ef786f;
 }
+
+.mytheme .button-flat {
+	background: #dfe5ec;
+	background-image: none;
+	border: none;
+	margin-right: 2px;
+}
+
+.mytheme .button-flat.button-flat--selected {
+	color: #FFF;
+	background-color: #a1b1c1;
+}
+
+.mytheme .bugrap-filters {
+	padding: 10px;
+}
